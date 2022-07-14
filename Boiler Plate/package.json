@@ -1,0 +1,22 @@
+{
+  "name": "react-blog",
+  "version": "1.0.0",
+  "description": "react blog",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bkdragon0228/shop-inflearn.git"
+  },
+  "author": "bkdragon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bkdragon0228/shop-inflearn/issues"
+  },
+  "homepage": "https://github.com/bkdragon0228/shop-inflearn#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
+}
