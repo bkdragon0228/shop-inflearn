@@ -3,6 +3,8 @@ const app = express();
 const port = 5000;
 const bodyParser = require('body-parser');
 
+const config = require('./config/key');
+
 // application/x-www-form-urlencoded 타입
 app.use(bodyParser.urlencoded({ extended: true }));
 // application/json 타입    : 각각을 분석
@@ -12,10 +14,7 @@ const { user, User } = require('./models/User');
 
 const mongoose = require('mongoose');
 mongoose
-    .connect(
-        'mongodb+srv://bkdragon:kbk003178@shopping.5cw7f.mongodb.net/?retryWrites=true&w=majority',
-        {}
-    )
+    .connect(config.mongoURI, {})
     .then(() => console.log('DB connection'))
     .catch((err) => console.error(err));
 
