@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 // 스키마
 const userSchema = mongoose.Schema({
@@ -32,6 +34,29 @@ const userSchema = mongoose.Schema({
     tokenExp: {
         type: Number,
     },
+});
+
+// register route에서 save하기 전에!
+userSchema.pre('save', function (next) {
+    var user = this; // userSchema
+
+    // password가 변횐될때만 암호화
+    if (user.isModified('password')) {
+        // salt 만들기
+        bcrypt.genSalt(saltRounds, function (err, salt) {
+            if (err) return next(err); // salt 만들기 실패 next는 바로 register route save로 감.
+
+            // 암호화
+            bcrypt.hash(user.password, salt, function (err, hash) {
+                if (err) return next(err); // 해쉬 실패
+
+                user.password = hash;
+                next();
+            });
+        });
+    } else {
+        next();
+    }
 });
 
 const User = mongoose.model('User', userSchema);

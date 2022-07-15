@@ -28,7 +28,7 @@ app.post('/register', (req, res) => {
 
     const user = new User(req.body); // body안에 json으로 정보가 들어있음. body-parser의 역할
 
-    // user에 저장하고 실패와 성공의 처리를 구분
+    // user에  모든 저장하고 실패와 성공의 처리를 구분
     // json으로 실패와 성공의 메세지를 보낸다.
     user.save((err, userInfo) => {
         if (err) return res.json({ success: false, err });
