@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = 5000;
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 const config = require('./config/key');
 
@@ -9,6 +10,8 @@ const config = require('./config/key');
 app.use(bodyParser.urlencoded({ extended: true }));
 // application/json 타입    : 각각을 분석
 app.use(bodyParser.json());
+// cookieParser, 사용하기 위한 과정
+app.use(cookieParser());
 
 const { user, User } = require('./models/User');
 
@@ -55,7 +58,14 @@ app.post('/login', (req, res) => {
                 });
 
             // 비밀번호가  갖다면 토큰 생성
-            user.generateToken((err, user) => {});
+            userInfo.generateToken((err, user) => {
+                if (err) return res.status(400).send(err);
+
+                // 토큰을 저장해야한다. 쿠키, 로컬스토리지
+                res.cookie('x_auth', user.token)
+                    .status(200)
+                    .json({ loginSuccess: true, userId: user._id });
+            });
         });
     });
 });

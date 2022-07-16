@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const jwt = require('jsonwebtoken');
 
 // 스키마
 const userSchema = mongoose.Schema({
@@ -59,12 +60,24 @@ userSchema.pre('save', function (next) {
     }
 });
 
-userSchema.methods.comparPassword = function (plainPassword, callback) {
+userSchema.methods.comparePassword = function (plainPassword, callback) {
     // plainPassword : 암호화 되지 않은 비밀번호
 
     bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
         if (err) return callback(err);
         callback(null, isMatch);
+    });
+};
+
+userSchema.methods.generateToken = function (callback) {
+    // jsonwebtoken 이용해서 token 생성
+    let user = this;
+
+    let token = jwt.sign(user._id.toHexString(), 'secretToken');
+    user.token = token;
+    user.save(function (err, user) {
+        if (err) return callback(err);
+        callback(null, user); // 토큰이 저장된 유저를 반환
     });
 };
 
