@@ -3,7 +3,7 @@ const app = express();
 const port = 5000;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-
+const { auth } = require('./middleware/auth');
 const config = require('./config/key');
 
 // application/x-www-form-urlencoded 타입
@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
     res.send('hello world hi hello');
 });
 
-app.post('api/users/register', (req, res) => {
+app.post('/api/users/register', (req, res) => {
     // 회원 가입시 필요한 정보들을 client에서 가져오면
     // 그것들을 db에 넣어준다.
 
@@ -39,7 +39,7 @@ app.post('api/users/register', (req, res) => {
     });
 });
 
-app.post('api/users/login', (req, res) => {
+app.post('/api/users/login', (req, res) => {
     // 요청된 이메일을 db에서 찾는다.
     User.findOne({ email: req.body.email }, (err, userInfo) => {
         if (!userInfo) {
@@ -67,6 +67,18 @@ app.post('api/users/login', (req, res) => {
                     .json({ loginSuccess: true, userId: user._id });
             });
         });
+    });
+});
+
+app.get('/api/users/auth', auth, (req, res) => {
+    // 미들웨어 통과 후의 작업, auth가 true
+    res.status(200).json({
+        _id: req.user._id,
+        isAdmin: req.user.role === 0 ? false : true,
+        isAuth: true,
+        email: req.user.email,
+        role: req.user.role,
+        image: req.user.image,
     });
 });
 
