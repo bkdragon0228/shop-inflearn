@@ -3,7 +3,7 @@ const app = express();
 const port = 5000;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const { auth } = require('./middleware/auth');
+const { auth } = require('../middleware/auth');
 const config = require('./config/key');
 
 // application/x-www-form-urlencoded 타입
@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 // cookieParser, 사용하기 위한 과정
 app.use(cookieParser());
 
-const { user, User } = require('./models/User');
+const { user, User } = require('../models/User');
 
 const mongoose = require('mongoose');
 mongoose
