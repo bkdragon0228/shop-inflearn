@@ -1,9 +1,8 @@
 const express = require('express');
 const app = express();
-const port = 5000;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const { auth } = require('../middleware/auth');
+const { auth } = require('./middleware/auth');
 const config = require('./config/key');
 
 // application/x-www-form-urlencoded 타입
@@ -13,7 +12,7 @@ app.use(bodyParser.json());
 // cookieParser, 사용하기 위한 과정
 app.use(cookieParser());
 
-const { user, User } = require('../models/User');
+const { User } = require('./models/User');
 
 const mongoose = require('mongoose');
 mongoose
@@ -23,6 +22,10 @@ mongoose
 
 app.get('/', (req, res) => {
     res.send('hello world hi hello');
+});
+
+app.get('/api/hello', (req, res) => {
+    res.send('안녕하세요~');
 });
 
 app.post('/api/users/register', (req, res) => {
@@ -90,4 +93,5 @@ app.get('/api/users/logout', auth, (req, res) => {
     });
 });
 
+const port = 5000;
 app.listen(port, () => console.log('listen!'));
