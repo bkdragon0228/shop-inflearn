@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import axios from 'axios';
+import { loginUser } from '../../../_action/user_action';
+import { useDispatch } from 'react-redux';
 
 const MainDiv = styled.div`
     display: flex;
@@ -14,8 +16,11 @@ const Form = styled.form`
     flex-direction: column;
 `;
 const LoginPage = () => {
+    const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+
+    const navi = useNavigate();
 
     const onSubmitHandler = (e) => {
         e.preventDefault();
@@ -24,8 +29,11 @@ const LoginPage = () => {
             email: email,
             password: password,
         };
-
-        axios.post('/api/users/login', body).then((res) => {});
+        dispatch(loginUser(body)).then((res) => {
+            if (res.payload.loginSuccess) {
+                navi('/');
+            }
+        });
     };
 
     const onEmailHandler = (e) => {
