@@ -2,10 +2,12 @@ import axios from 'axios';
 import { LOGIN_USER, REGISTER_USER } from './types';
 
 export function loginUser(dataToSubmit) {
+    // 서버에서 받은 데이터를 저장
     const request = axios
         .post('/api/users/login', dataToSubmit)
         .then((res) => res.data);
 
+    // reducer에 넘겨줄 객체
     return {
         type: LOGIN_USER,
         payload: request,

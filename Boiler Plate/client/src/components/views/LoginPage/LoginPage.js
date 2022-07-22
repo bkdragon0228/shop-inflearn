@@ -29,6 +29,8 @@ const LoginPage = () => {
             email: email,
             password: password,
         };
+
+        // 액션을 만들고 dispatch로 발생시킨다.
         dispatch(loginUser(body)).then((res) => {
             if (res.payload.loginSuccess) {
                 navi('/');

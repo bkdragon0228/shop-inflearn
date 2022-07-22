@@ -8,19 +8,19 @@ import { applyMiddleware, createStore } from 'redux';
 import promiseMiddleware from 'redux-promise';
 import ReduxThunk from 'redux-thunk';
 
+// 생성한 리듀서를 import
 import Reducer from './_reducers';
 
 import 'antd/dist/antd.css';
-const createStoreWithMiddleware = applyMiddleware(
-    promiseMiddleware,
-    ReduxThunk
-)(createStore);
+
+// store를 미들웨어 두개를 추가하여 생성.
+const store = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
         <Provider
-            store={createStoreWithMiddleware(
+            store={store(
                 Reducer,
                 window.__REDUX_DEVTOOLS_EXTENSION__ &&
                     window.__REDUX_DEVTOOLS_EXTENSION__()
