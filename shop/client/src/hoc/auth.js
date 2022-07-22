@@ -1,44 +1,40 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
-import { auth } from '../_actions/user_actions';
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from 'react-redux';
+import { auth } from '../_action/user_action';
+import { useNavigate } from 'react-router-dom';
 
-export default function (SpecificComponent, option, adminRoute = null) {
+export default function Auth(SpecificComponent, option, adminRoute = null) {
+    // option
+    // null => 아무나 출입가능
+    // trun => 로그인한 유저만 출입 가능
+    // false => 로그인한 유저는 출입 불가능
+
+    //세번째 인자는 어드민 유저만 출입가능하게 하고싶을 때 true
     function AuthenticationCheck(props) {
-
-        let user = useSelector(state => state.user);
         const dispatch = useDispatch();
+        const navi = useNavigate();
 
         useEffect(() => {
-            //To know my current status, send Auth request 
-            dispatch(auth()).then(response => {
-                //Not Loggined in Status 
-                if (!response.payload.isAuth) {
+            dispatch(auth()).then((res) => {
+                // 로그인 하지 않은 상태
+                if (!res.payload.isAuth) {
                     if (option) {
-                        props.history.push('/login')
+                        navi('/login');
                     }
-                    //Loggined in Status 
                 } else {
-                    //supposed to be Admin page, but not admin person wants to go inside
-                    if (adminRoute && !response.payload.isAdmin) {
-                        props.history.push('/')
-                    }
-                    //Logged in Status, but Try to go into log in page 
-                    else {
-                        if (option === false) {
-                            props.history.push('/')
+                    // 로그인한 상태
+                    if (adminRoute && !res.payload.isAdmin) {
+                        navi('/');
+                    } else {
+                        if (!option) {
+                            navi('/');
                         }
                     }
                 }
-            })
+            });
+        }, []);
 
-        }, [])
-
-        return (
-            <SpecificComponent {...props} user={user} />
-        )
+        return <SpecificComponent />;
     }
-    return AuthenticationCheck
+    return AuthenticationCheck;
 }
-
-

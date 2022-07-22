@@ -1,36 +1,37 @@
-import 'react-app-polyfill/ie9';
-import 'react-app-polyfill/ie11';
-import 'core-js';
-
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './components/App';
-import * as serviceWorker from './serviceWorker';
-import { BrowserRouter } from "react-router-dom";
-
-import Reducer from './_reducers';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 import promiseMiddleware from 'redux-promise';
 import ReduxThunk from 'redux-thunk';
 
-const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
+// 생성한 리듀서를 import
+import Reducer from './_reducers';
 
-ReactDOM.render(
-    <Provider
-        store={createStoreWithMiddleware(
-            Reducer,
-            window.__REDUX_DEVTOOLS_EXTENSION__ &&
-            window.__REDUX_DEVTOOLS_EXTENSION__()
-        )}
-    >
-        <BrowserRouter>
+import 'antd/dist/antd.css';
+
+// store를 미들웨어 두개를 추가하여 생성.
+const store = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+    <React.StrictMode>
+        <Provider
+            store={store(
+                Reducer,
+                window.__REDUX_DEVTOOLS_EXTENSION__ &&
+                    window.__REDUX_DEVTOOLS_EXTENSION__()
+            )}
+        >
             <App />
-        </BrowserRouter>
-    </Provider>
-    , document.getElementById('root'));
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+        </Provider>
+    </React.StrictMode>
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
