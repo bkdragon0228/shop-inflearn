@@ -61,6 +61,7 @@ const RegisterPage = (props) => {
     return (
         <MainDiv>
             <Form onSubmit={onSubmitHandler}>
+                <h2>Sign Up</h2>
                 <label>Name</label>
                 <input type="text" value={name} onChange={onNameHandler} />
 

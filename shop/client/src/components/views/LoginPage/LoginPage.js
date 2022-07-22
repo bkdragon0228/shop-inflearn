@@ -48,6 +48,7 @@ const LoginPage = () => {
     return (
         <MainDiv>
             <Form onSubmit={onSubmitHandler}>
+                <h2>Sign In</h2>
                 <label>Email</label>
                 <input type="email" value={email} onChange={onEmailHandler} />
                 <label>password</label>
