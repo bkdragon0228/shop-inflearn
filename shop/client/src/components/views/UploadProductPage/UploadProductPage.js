@@ -4,6 +4,15 @@ import { Typography, Button, Form, Input } from 'antd';
 const { Title } = Typography;
 const { TextArea } = Input;
 
+const Continents = [
+    { key: 1, value: 'Africa' },
+    { key: 2, value: 'Europe' },
+    { key: 3, value: 'Asia' },
+    { key: 4, value: 'America' },
+    { key: 5, value: 'Australia' },
+    { key: 6, value: 'Antarctica' },
+];
+
 const UploadProductPage = () => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState(0);
@@ -20,6 +29,9 @@ const UploadProductPage = () => {
     };
     const priceChangeHandler = (e) => {
         setPrice(e.currentTarget.value);
+    };
+    const continentChangeHandler = (e) => {
+        setContinent(e.currentTarget.value);
     };
 
     return (
@@ -46,8 +58,14 @@ const UploadProductPage = () => {
                 <Input value={price} onChange={priceChangeHandler} />
                 <br />
                 <br />
-                <select>
-                    <option></option>
+                <select onChange={continentChangeHandler} value={continent}>
+                    {Continents.map((ele) => {
+                        return (
+                            <option key={ele.key} value={ele.key}>
+                                {ele.value}
+                            </option>
+                        );
+                    })}
                 </select>
                 <br />
                 <br />
