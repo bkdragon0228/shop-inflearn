@@ -21,7 +21,6 @@ const SignDiv = styled.div`
 
 const NavBar = () => {
     const user = useSelector((state) => state.user);
-    console.log(user);
     const navi = useNavigate();
 
     const logoutHanlder = () => {
