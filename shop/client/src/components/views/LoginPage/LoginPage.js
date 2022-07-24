@@ -32,6 +32,7 @@ const LoginPage = () => {
 
         // 액션을 만들고 dispatch로 발생시킨다.
         dispatch(loginUser(body)).then((res) => {
+            console.log(res);
             if (res.payload.loginSuccess) {
                 navi('/');
             }
