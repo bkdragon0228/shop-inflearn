@@ -12,6 +12,8 @@ app.use(bodyParser.json());
 // cookieParser, 사용하기 위한 과정
 app.use(cookieParser());
 
+app.use('/api/product', require('./routes/products'));
+
 const { User } = require('./models/User');
 
 const mongoose = require('mongoose');

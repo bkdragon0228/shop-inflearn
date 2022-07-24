@@ -1,6 +1,6 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { EditOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
 const FileUpload = () => {
@@ -14,6 +14,7 @@ const FileUpload = () => {
 
         axios.post('/api/product/image', formData, config).then((res) => {
             if (res.data.success) {
+                console.log(res.data);
             } else {
                 alert('fail to file upload');
             }

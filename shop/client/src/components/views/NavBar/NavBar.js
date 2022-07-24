@@ -49,7 +49,7 @@ const NavBar = () => {
             <NavDiv>
                 <SignDiv>
                     <Link to="/product/upload">Upload</Link>
-                    <a onClick={logoutHanlder}>logout</a>
+                    <button onClick={logoutHanlder}>logout</button>
                 </SignDiv>
             </NavDiv>
         );
