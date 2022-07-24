@@ -49,11 +49,21 @@ const UploadProductPage = ({ user }) => {
         // 채운 값들을 서버에 보낸다.
 
         const body = {
-            // 로그인 된 사람의  ID
             writer: user.userData.userId,
+            title: name,
+            description: description,
+            price: price,
+            images: images,
+            continent: continent,
         };
 
-        axios.post('/api/product', body);
+        axios.post('/api/product', body).then((res) => {
+            if (res.data.success) {
+                alert('상품 업로드에 성공 했습니다.');
+            } else {
+                alert('상품 업로드에 실패 했습니다.');
+            }
+        });
     };
     return (
         <div style={{ maxWidth: '700px', margin: '2rem auto' }}>
