@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Typography, Button, Form, Input } from 'antd';
 import FileUpload from '../../../utils/FileUpload';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const { Title } = Typography;
 const { TextArea } = Input;
@@ -22,6 +23,8 @@ const UploadProductPage = ({ user }) => {
     const [continent, setContinent] = useState(1);
 
     const [images, setImages] = useState([]);
+
+    const navi = useNavigate();
 
     const nameChangeHandler = (e) => {
         setName(e.currentTarget.value);
@@ -60,6 +63,7 @@ const UploadProductPage = ({ user }) => {
         axios.post('/api/product', body).then((res) => {
             if (res.data.success) {
                 alert('상품 업로드에 성공 했습니다.');
+                navi('/');
             } else {
                 alert('상품 업로드에 실패 했습니다.');
             }
