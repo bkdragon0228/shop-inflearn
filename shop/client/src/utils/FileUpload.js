@@ -21,6 +21,15 @@ const FileUpload = () => {
             }
         });
     };
+
+    const deleteHandler = (img) => {
+        const currentIndex = images.indexOf(img);
+        console.log(currentIndex);
+
+        let newImages = [...images];
+        newImages.splice(currentIndex, 1);
+        setImages(newImages);
+    };
     return (
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <Dropzone onDrop={dropHandler}>
@@ -50,12 +59,14 @@ const FileUpload = () => {
             <div>
                 {images.map((img, idx) => (
                     <div
+                        key={idx}
                         style={{
                             display: 'flex',
                             width: '350px',
                             height: '240px',
                             overflowX: 'scroll',
                         }}
+                        onClick={() => deleteHandler(img)} // 파라미터가 있는 함수를 쓸 땐 이렇게!
                     >
                         <img
                             style={{
@@ -64,7 +75,6 @@ const FileUpload = () => {
                                 height: '240px',
                             }}
                             src={`http://localhost:5000/${img}`}
-                            key={idx}
                         />
                     </div>
                 ))}
