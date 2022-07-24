@@ -3,7 +3,7 @@ import Dropzone from 'react-dropzone';
 import { EditOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
-const FileUpload = () => {
+const FileUpload = ({ refreshFunction }) => {
     const [images, setImages] = useState([]);
     const dropHandler = (files) => {
         // 이미지 전송에 필요한 form 전송
@@ -16,6 +16,8 @@ const FileUpload = () => {
         axios.post('/api/product/image', formData, config).then((res) => {
             if (res.data.success) {
                 setImages((prev) => [...prev, res.data.filePath]);
+                // 상위 컴포넌트에서 가져온 함수(image배열이 변경될 때 실행)
+                refreshFunction([...images, res.data.filePath]);
             } else {
                 alert('fail to file upload');
             }
@@ -24,11 +26,12 @@ const FileUpload = () => {
 
     const deleteHandler = (img) => {
         const currentIndex = images.indexOf(img);
-        console.log(currentIndex);
 
         let newImages = [...images];
         newImages.splice(currentIndex, 1);
         setImages(newImages);
+        // 상위 컴포넌트에서 가져온 함수
+        refreshFunction(newImages);
     };
     return (
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
