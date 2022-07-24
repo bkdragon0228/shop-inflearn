@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Dropzone from 'react-dropzone';
 import { EditOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
 const FileUpload = () => {
+    const [images, setImages] = useState([]);
     const dropHandler = (files) => {
         // 이미지 전송에 필요한 form 전송
         let formData = new FormData();
@@ -14,7 +15,7 @@ const FileUpload = () => {
 
         axios.post('/api/product/image', formData, config).then((res) => {
             if (res.data.success) {
-                console.log(res.data);
+                setImages((prev) => [...prev, res.data.filePath]);
             } else {
                 alert('fail to file upload');
             }
@@ -45,6 +46,29 @@ const FileUpload = () => {
                     </section>
                 )}
             </Dropzone>
+
+            <div>
+                {images.map((img, idx) => (
+                    <div
+                        style={{
+                            display: 'flex',
+                            width: '350px',
+                            height: '240px',
+                            overflowX: 'scroll',
+                        }}
+                    >
+                        <img
+                            style={{
+                                minWidth: '300px',
+                                width: '300px',
+                                height: '240px',
+                            }}
+                            src={`http://localhost:5000/${img}`}
+                            key={idx}
+                        />
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };

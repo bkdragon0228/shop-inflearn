@@ -22,7 +22,7 @@ router.post('/image', (req, res) => {
         }
         return res.json({
             success: true,
-            filesPath: res.req.file.path,
+            filePath: res.req.file.path,
             fileName: res.req.file.filename,
         });
     });

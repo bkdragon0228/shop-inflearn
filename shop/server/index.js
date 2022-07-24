@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser');
 const { auth } = require('./middleware/auth');
 const config = require('./config/key');
 
+app.use('/uploads', express.static('uploads')); // 정적인 파일 제공
+
 // application/x-www-form-urlencoded 타입
 app.use(bodyParser.urlencoded({ extended: true }));
 // application/json 타입    : 각각을 분석
