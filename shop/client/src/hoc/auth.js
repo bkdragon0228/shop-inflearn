@@ -34,7 +34,7 @@ export default function Auth(SpecificComponent, option, adminRoute = null) {
                     }
                 }
             });
-        }, [dispatch]);
+        }, []);
 
         return <SpecificComponent user={user} />;
     }

@@ -52,7 +52,7 @@ const UploadProductPage = ({ user }) => {
         // 채운 값들을 서버에 보낸다.
 
         const body = {
-            writer: user.userData.userId,
+            writer: user.userData._id,
             title: name,
             description: description,
             price: price,
@@ -74,7 +74,7 @@ const UploadProductPage = ({ user }) => {
             <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
                 <Title level={2}>옷 상품 업로드</Title>
             </div>
-            <Form onSubmit={submitHandler}>
+            <Form onSubmitCapture={submitHandler}>
                 <FileUpload refreshFunction={updateImages} />
 
                 <br />
@@ -105,7 +105,7 @@ const UploadProductPage = ({ user }) => {
                 </select>
                 <br />
                 <br />
-                <Button type="submit">확인</Button>
+                <Button htmlType="submit">확인</Button>
             </Form>
         </div>
     );
