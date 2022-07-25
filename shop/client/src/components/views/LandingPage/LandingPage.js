@@ -18,25 +18,38 @@ const LandingPage = () => {
     const [skip, setSkip] = useState(0);
     const [limit, setLimit] = useState(8);
 
-    const landingProducts = async () => {
-        let body = {
-            skip: skip,
-            limit: limit,
-        };
+    const landingProducts = async (body) => {
         const responce = await axios.post('/api/product/products', body);
 
         if (responce.data.success) {
-            setProducts(responce.data.productsInfo);
+            if (body.loadMore) {
+                setProducts((prev) => [...prev, ...responce.data.productsInfo]);
+            } else {
+                setProducts(responce.data.productsInfo);
+            }
         } else {
             alert('상품을 가져오는데 실패했습니다.');
         }
     };
 
     useEffect(() => {
-        landingProducts();
+        let body = {
+            skip: skip,
+            limit: limit,
+        };
+        landingProducts(body);
     }, []);
 
-    const loadMoreHandler = () => {};
+    const loadMoreHandler = () => {
+        let newSkip = skip + limit;
+        let body = {
+            skip: newSkip,
+            limit: limit,
+            loadMore: true,
+        };
+        landingProducts(body);
+        setSkip(newSkip);
+    };
 
     const renderCards = products.map((product, index) => {
         return (
