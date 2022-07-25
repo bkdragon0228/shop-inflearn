@@ -1,59 +1,56 @@
-import axios from 'axios';
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import LeftMenu from './sections/LeftMenu';
+import RightMenu from './sections/RightMenu';
+import { Drawer, Button } from 'antd';
+import './sections/NavBar.css';
 
-import styled from 'styled-components';
+function NavBar() {
+    const [visible, setVisible] = useState(false);
 
-const NavDiv = styled.div`
-    position : relative;
-    width : 100%
-    height : 5rem
-`;
-
-const SignDiv = styled.div`
-    position: absolute;
-    display: flex;
-    justify-content: space-evenly;
-    width: 100px;
-    right: 100px;
-`;
-
-const NavBar = () => {
-    const user = useSelector((state) => state.user);
-    const navi = useNavigate();
-
-    const logoutHanlder = () => {
-        axios.get('/api/users/logout').then((res) => {
-            if (res.data.success) {
-                navi('/login');
-            } else {
-                alert('Log Out Failed');
-            }
-        });
+    const showDrawer = () => {
+        setVisible(true);
     };
 
-    // 로그인 전
-    if (user.userData && !user.userData.isAuth) {
-        return (
-            <NavDiv>
-                <SignDiv>
-                    <Link to="/register">Signup</Link>
-                    <Link to="/login">Signin</Link>
-                </SignDiv>
-            </NavDiv>
-        );
-    } else {
-        return (
-            // 로그인 후
-            <NavDiv>
-                <SignDiv>
-                    <Link to="/product/upload">Upload</Link>
-                    <button onClick={logoutHanlder}>logout</button>
-                </SignDiv>
-            </NavDiv>
-        );
-    }
-};
+    const onClose = () => {
+        setVisible(false);
+    };
+
+    return (
+        <nav
+            className="menu"
+            style={{ position: 'fixed', zIndex: 5, width: '100%' }}
+        >
+            <div className="menu__logo">
+                <a href="/">Logo</a>
+            </div>
+            <div className="menu__container">
+                <div className="menu_left">
+                    <LeftMenu mode="horizontal" />
+                </div>
+                <div className="menu_rigth">
+                    <RightMenu mode="horizontal" />
+                </div>
+                <Button
+                    className="menu__mobile-button"
+                    type="primary"
+                    onClick={showDrawer}
+                >
+                    {/* <Icon type="align-right" /> */}
+                </Button>
+                <Drawer
+                    title="Basic Drawer"
+                    placement="right"
+                    className="menu_drawer"
+                    closable={false}
+                    onClose={onClose}
+                    visible={visible}
+                >
+                    <LeftMenu mode="inline" />
+                    <RightMenu mode="inline" />
+                </Drawer>
+            </div>
+        </nav>
+    );
+}
 
 export default NavBar;
