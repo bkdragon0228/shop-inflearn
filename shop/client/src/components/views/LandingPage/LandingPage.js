@@ -17,6 +17,7 @@ const LandingPage = () => {
 
     const [skip, setSkip] = useState(0);
     const [limit, setLimit] = useState(8);
+    const [postSize, setPostSize] = useState(0);
 
     const landingProducts = async (body) => {
         const responce = await axios.post('/api/product/products', body);
@@ -27,6 +28,7 @@ const LandingPage = () => {
             } else {
                 setProducts(responce.data.productsInfo);
             }
+            setPostSize(responce.data.postSize);
         } else {
             alert('상품을 가져오는데 실패했습니다.');
         }
@@ -74,9 +76,12 @@ const LandingPage = () => {
 
             <Row gutter={[16, 16]}>{renderCards}</Row>
 
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                <button onClick={loadMoreHandler}>더보기</button>
-            </div>
+            <br />
+            {postSize >= limit && (
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <button onClick={loadMoreHandler}>더보기</button>
+                </div>
+            )}
         </div>
     );
 };
