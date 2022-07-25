@@ -3,6 +3,7 @@ import { Menu } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 function RightMenu(props) {
     const user = useSelector((state) => state.user);
@@ -32,6 +33,9 @@ function RightMenu(props) {
     } else {
         return (
             <Menu mode={props.mode}>
+                <Menu.Item key="upload">
+                    <Link to="/product/upload">Upload</Link>
+                </Menu.Item>
                 <Menu.Item key="logout">
                     <a onClick={logoutHandler}>Logout</a>
                 </Menu.Item>

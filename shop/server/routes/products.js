@@ -39,4 +39,16 @@ router.post('/image', (req, res) => {
     });
 });
 
+router.post('/products', (req, res) => {
+    // product에 들어있는 모든 상품을 가져오기
+    // 인자가 없을 때 모든 아이템을 가져온다.
+    Product.find()
+        .populate('writer')
+        .exec((err, productsInfo) => {
+            if (err) return res.status(400).json({ success: false, err });
+
+            return res.status(200).json({ success: true, productsInfo });
+        });
+});
+
 module.exports = router;
