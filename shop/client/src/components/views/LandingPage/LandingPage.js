@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Col, Row, Card } from 'antd';
+import { Col, Row, Card, Carousel } from 'antd';
 import {
     RocketOutlined,
     EditOutlined,
     EllipsisOutlined,
     SettingOutlined,
 } from '@ant-design/icons';
+
+import ImageSlider from '../../../utils/ImageSlider';
 
 const { Meta } = Card;
 
@@ -15,8 +17,12 @@ const LandingPage = () => {
 
     const landingProducts = async () => {
         const responce = await axios.post('/api/product/products');
-        const data = responce.data;
-        setProducts(data.productsInfo);
+
+        if (responce.data.success) {
+            setProducts(responce.data.productsInfo);
+        } else {
+            alert('상품을 가져오는데 실패했습니다.');
+        }
     };
 
     useEffect(() => {
@@ -24,15 +30,11 @@ const LandingPage = () => {
     }, []);
 
     const renderCards = products.map((product, index) => {
+        console.log(product);
         return (
             <Col lg={6} md={8} xs={24} key={index}>
                 <Card
-                    cover={
-                        <img
-                            style={{ width: '100%', maxHeight: '150px' }}
-                            src={`http://localhost:5000/${product.images[0]}`}
-                        />
-                    }
+                    cover={<ImageSlider images={product.images} />}
                     actions={[
                         <SettingOutlined key="setting" />,
                         <EditOutlined key="edit" />,
