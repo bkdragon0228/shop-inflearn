@@ -15,23 +15,22 @@ const LandingPage = () => {
 
     const [skip, setSkip] = useState(0);
     const [limit, setLimit] = useState(8);
-    const [postSize, setPostSize] = useState(0);
+    const [postSize, setPostSize] = useState(0); // 더보기 버튼 관련
     const [Filters, setFilters] = useState({
         continents: [],
         price: [],
     });
 
     const landingProducts = async (body) => {
-        const responce = await axios.post('/api/product/products', body);
-
-        if (responce.data.success) {
+        try {
+            const responce = await axios.post('/api/product/products', body);
             if (body.loadMore) {
                 setProducts((prev) => [...prev, ...responce.data.productsInfo]);
             } else {
                 setProducts(responce.data.productsInfo);
             }
-            setPostSize(responce.data.postSize);
-        } else {
+            setPostSize(responce.data.postSize); // 상품 수
+        } catch (err) {
             alert('상품을 가져오는데 실패했습니다.');
         }
     };
@@ -52,6 +51,7 @@ const LandingPage = () => {
             loadMore: true,
         };
         landingProducts(body);
+        // 총 9개의 상품이 있다고 하고, 처음에 8개 그다음에 1개
         setSkip(newSkip);
     };
 
@@ -68,22 +68,18 @@ const LandingPage = () => {
         );
     });
 
-    const showFilterResult = (filters) => {
+    const handleFilters = (filters, category) => {
+        const newFilters = { ...Filters }; // state를 바로 수정하지 않기 위해
+        newFilters[category] = filters;
+
         let body = {
             skip: 0,
             limit: limit,
-            filters: filters,
+            filters: newFilters,
         };
         landingProducts(body);
+        setFilters(newFilters);
         setSkip(0);
-    };
-    // _id가 담긴 배열이 넘어온다.
-    const handleFilters = (filters, category) => {
-        const newFilters = { ...Filters };
-        // 새로이 바꿔주는 작업
-        newFilters[category] = filters;
-
-        showFilterResult(newFilters);
     };
     return (
         <div style={{ width: '75%', margin: '3rem auto' }}>
@@ -94,7 +90,7 @@ const LandingPage = () => {
             </div>
             <CheckBox
                 list={continents}
-                handleFilters={(filter) => handleFilters(filter, 'continent')} // 하위 state를 받아오기위해
+                handleFilters={(filters) => handleFilters(filters, 'continent')} // 하위 state를 받아오기위해
             />
             <Row gutter={[16, 16]}>{renderCards}</Row>
 

@@ -39,6 +39,7 @@ const UploadProductPage = ({ user }) => {
         setContinent(e.currentTarget.value);
     };
 
+    // 히위 컴포넌트의 state를 받아온 함수
     const updateImages = (newImages) => {
         setImages(newImages);
     };
@@ -52,7 +53,7 @@ const UploadProductPage = ({ user }) => {
         // 채운 값들을 서버에 보낸다.
 
         const body = {
-            writer: user.userData._id,
+            writer: user.userData._id, // 유저아이디가 들어간다. 후에 populate로 참조하기 위해
             title: name,
             description: description,
             price: price,
@@ -75,7 +76,9 @@ const UploadProductPage = ({ user }) => {
                 <Title level={2}> 상품 업로드</Title>
             </div>
             <Form onSubmitCapture={submitHandler}>
-                <FileUpload refreshFunction={updateImages} />
+                <FileUpload
+                    refreshFunction={(newImages) => updateImages(newImages)}
+                />
 
                 <br />
                 <br />

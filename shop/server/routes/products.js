@@ -3,8 +3,17 @@ const router = express.Router();
 const multer = require('multer');
 const { Product } = require('../models/Product');
 
+// 디렉토리가 없을 경우 생성해주는 예외처리
+// try {
+//     fs.readdirSync('uploads');
+// } catch (err) {
+//     console.log('not exist directory');
+//     fs.mkdirSync('uploads');
+// }
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
+        //저장위치
         cb(null, 'uploads/');
     },
     filename: function (req, file, cb) {
@@ -14,6 +23,21 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage }).single('file');
 
+router.post('/image', (req, res) => {
+    // 가져온 이미지를 uploads에 저장
+    // 멀터 메서드
+    upload(req, res, function (err) {
+        if (err) {
+            return res.json({ success: false, err });
+        }
+        return res.json({
+            success: true,
+            filePath: res.req.file.path, // 저장에 성공하면 파일 경로와 이름을 보내준다.
+            fileName: res.req.file.filename,
+        });
+    });
+});
+
 router.post('/', (req, res) => {
     // 받아온 정보 db에 저장
     const product = new Product(req.body);
@@ -21,21 +45,6 @@ router.post('/', (req, res) => {
         if (err) return res.status(400).json({ success: false, err });
 
         return res.status(200).json({ success: true }); // 이 json이 클라이언트에서 받은 res의 data안에 들어간다.
-    });
-});
-
-router.post('/image', (req, res) => {
-    // 가져온 이미지를 저장
-
-    upload(req, res, function (err) {
-        if (err) {
-            return res.json({ success: false, err });
-        }
-        return res.json({
-            success: true,
-            filePath: res.req.file.path,
-            fileName: res.req.file.filename,
-        });
     });
 });
 
@@ -54,9 +63,11 @@ router.post('/products', (req, res) => {
     }
 
     Product.find(findArgs) // { continent: [ 3 ] } 이런식
-        .populate('writer')
+        .populate('writer') // 타 컬렉션(모델)의 모든 정보를 가져온다.
         .skip(skip)
         .limit(limit)
+        //  find, findOne, findById, findOneAndUpdate 들의 메서드의 리턴값은 유사 프로미스인데 exec로
+        // 온전한 프로미스 반환값을 얻을 수 있다. 기능은 동일하나 사용할 것을 권장한다고 한다.
         .exec((err, productsInfo) => {
             if (err) return res.status(400).json({ success: false, err });
 

@@ -5,6 +5,8 @@ import axios from 'axios';
 
 const FileUpload = ({ refreshFunction }) => {
     const [images, setImages] = useState([]);
+
+    // 이미지 전송하고 받아옴
     const dropHandler = (files) => {
         // 이미지 전송에 필요한 form 전송
         let formData = new FormData();
@@ -27,7 +29,7 @@ const FileUpload = ({ refreshFunction }) => {
     const deleteHandler = (img) => {
         const currentIndex = images.indexOf(img);
 
-        let newImages = [...images];
+        let newImages = [...images]; // images를 직접 바꾸면 안됨!
         newImages.splice(currentIndex, 1);
         setImages(newImages);
         // 상위 컴포넌트에서 가져온 함수

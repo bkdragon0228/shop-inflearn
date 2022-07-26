@@ -9,8 +9,8 @@ const CheckBox = ({ list, handleFilters }) => {
         // 누른 것의 index를 구하고
         const currentIndex = checked.indexOf(id);
 
-        // 전체 checked 된 state에서 현재 누른 checkbox가 없다면
         const newChecked = [...checked];
+        // 전체 checked 된 state에서 현재 누른 checkbox가 없다면
         if (currentIndex === -1) {
             // state에 넣어준다.
             newChecked.push(id);
