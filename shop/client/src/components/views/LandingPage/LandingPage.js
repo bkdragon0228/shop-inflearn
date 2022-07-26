@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Col, Row, Card, Carousel } from 'antd';
-import {
-    RocketOutlined,
-    EditOutlined,
-    EllipsisOutlined,
-    SettingOutlined,
-} from '@ant-design/icons';
+import { Col, Row, Card } from 'antd';
+import { RocketOutlined } from '@ant-design/icons';
+
+import { continents } from './Sections/Datas';
 
 import ImageSlider from '../../../utils/ImageSlider';
+import CheckBox from './Sections/CheckBox';
 
 const { Meta } = Card;
 
@@ -73,7 +71,7 @@ const LandingPage = () => {
                     Let's travel anywhere <RocketOutlined />
                 </h2>
             </div>
-
+            <CheckBox list={continents} />
             <Row gutter={[16, 16]}>{renderCards}</Row>
 
             <br />
