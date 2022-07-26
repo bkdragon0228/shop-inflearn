@@ -44,20 +44,27 @@ router.post('/products', (req, res) => {
     let limit = req.body.limit ? parseInt(req.body.limit) : 20;
     let skip = req.body.skip ? parseInt(req.body.skip) : 0;
 
-    Product.find()
+    let findArgs = {};
+
+    for (let key in req.body.filters) {
+        // key는 category, continent나 price이다.
+        if (req.body.filters[key].length > 0) {
+            findArgs[key] = req.body.filters[key];
+        }
+    }
+
+    Product.find(findArgs) // { continent: [ 3 ] } 이런식
         .populate('writer')
         .skip(skip)
         .limit(limit)
         .exec((err, productsInfo) => {
             if (err) return res.status(400).json({ success: false, err });
 
-            return res
-                .status(200)
-                .json({
-                    success: true,
-                    productsInfo,
-                    postSize: productsInfo.length,
-                });
+            return res.status(200).json({
+                success: true,
+                productsInfo,
+                postSize: productsInfo.length,
+            });
         });
 });
 

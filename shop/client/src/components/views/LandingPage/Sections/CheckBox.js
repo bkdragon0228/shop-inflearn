@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Collapse, Checkbox } from 'antd';
 const { Panel } = Collapse;
 
-const CheckBox = ({ list }) => {
+const CheckBox = ({ list, handleFilters }) => {
     const [checked, setChecked] = useState([]);
 
     const handleToggle = (id) => {
@@ -20,6 +20,7 @@ const CheckBox = ({ list }) => {
         }
 
         setChecked(newChecked);
+        handleFilters(newChecked);
     };
     const renderCheckboxList = () =>
         // 가져오는 속도 차이가 있을 수 있어 list가 있는 지 확인
