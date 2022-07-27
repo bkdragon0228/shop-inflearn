@@ -40,6 +40,20 @@ const productSchema = mongoose.Schema(
     { timestamps: true }
 );
 
+// 검색에 중요도를 얼마나 둘지, title에 5배더
+productSchema.index(
+    {
+        title: 'text',
+        description: 'text',
+    },
+    {
+        weights: {
+            title: 5,
+            description: 1, // default
+        },
+    }
+);
+
 const Product = mongoose.model('Product', productSchema);
 
 module.exports = { Product };

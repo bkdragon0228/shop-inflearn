@@ -23,7 +23,7 @@ const LandingPage = () => {
         price: [],
     });
 
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState(''); // 검색 값
 
     const landingProducts = async (body) => {
         try {
@@ -105,7 +105,17 @@ const LandingPage = () => {
     };
 
     const updateSearchTerm = (newSearchTerm) => {
+        let body = {
+            limit: limit,
+            skip: 0, // db에서 처음부터 긁어와야 함.
+            filters: Filters,
+            searchTerm: newSearchTerm,
+        };
+
+        // 검색에 조건에 맞는 상품을 불러와야한다.
+        landingProducts(body);
         setSearchTerm(newSearchTerm);
+        setSkip(0);
     };
     return (
         <div style={{ width: '75%', margin: '3rem auto' }}>

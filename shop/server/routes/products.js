@@ -52,6 +52,7 @@ router.post('/products', (req, res) => {
     // 문자열이여서 숫자로 바꿔주는 작업
     let limit = req.body.limit ? parseInt(req.body.limit) : 20;
     let skip = req.body.skip ? parseInt(req.body.skip) : 0;
+    let term = req.body.searchTerm;
 
     let findArgs = {};
 
@@ -72,21 +73,37 @@ router.post('/products', (req, res) => {
 
     // console.log(findArgs); //  { price: { '$gte': 300, '$lte': 349 }, continent: [ 5, 3 ] } 이런식~
 
-    Product.find(findArgs) // 객체식으로 넣으면 필터링,  { continent: [ 3 ], price : {뭐이상 뭐이하} } 이런식
-        .populate('writer') // 타 컬렉션(모델)의 모든 정보를 가져온다.
-        .skip(skip)
-        .limit(limit)
-        //  find, findOne, findById, findOneAndUpdate 들의 메서드의 리턴값은 유사 프로미스인데 exec로
-        // 온전한 프로미스 반환값을 얻을 수 있다. 기능은 동일하나 사용할 것을 권장한다고 한다.
-        .exec((err, productsInfo) => {
-            if (err) return res.status(400).json({ success: false, err });
-
-            return res.status(200).json({
-                success: true,
-                productsInfo,
-                postSize: productsInfo.length,
+    if (term) {
+        Product.find(findArgs)
+            .find({ $text: { $search: term } })
+            .populate('writer')
+            .skip(skip)
+            .limit(limit)
+            .exec((err, productsInfo) => {
+                if (err) return res.status(400).json({ success: false, err });
+                return res.status(200).json({
+                    success: true,
+                    productsInfo,
+                    postSize: productsInfo.length,
+                });
             });
-        });
+    } else {
+        Product.find(findArgs) // 객체식으로 넣으면 필터링,  { continent: [ 3 ], price : {뭐이상 뭐이하} } 이런식
+            .populate('writer') // 타 컬렉션(모델)의 모든 정보를 가져온다.
+            .skip(skip)
+            .limit(limit)
+            //  find, findOne, findById, findOneAndUpdate 들의 메서드의 리턴값은 유사 프로미스인데 exec로
+            // 온전한 프로미스 반환값을 얻을 수 있다. 기능은 동일하나 사용할 것을 권장한다고 한다.
+            .exec((err, productsInfo) => {
+                if (err) return res.status(400).json({ success: false, err });
+
+                return res.status(200).json({
+                    success: true,
+                    productsInfo,
+                    postSize: productsInfo.length,
+                });
+            });
+    }
 });
 
 module.exports = router;
