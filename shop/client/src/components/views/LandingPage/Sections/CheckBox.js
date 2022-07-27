@@ -38,7 +38,7 @@ const CheckBox = ({ list, handleFilters }) => {
     return (
         <div>
             <Collapse defaultActiveKey={['1']}>
-                <Panel header="This is panel header 1" key="1">
+                <Panel header="Continent" key="1">
                     {renderCheckboxList()}
                 </Panel>
             </Collapse>

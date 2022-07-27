@@ -7,6 +7,7 @@ import { continents, price } from './Sections/Datas';
 
 import ImageSlider from '../../../utils/ImageSlider';
 import CheckBox from './Sections/CheckBox';
+import RadioBox from './Sections/RadioBox';
 
 const { Meta } = Card;
 
@@ -100,6 +101,12 @@ const LandingPage = () => {
                 </Col>
                 <Col lg={12} xs={24}>
                     {/* radio box */}
+                    <RadioBox
+                        list={price}
+                        handleFilters={(filters) =>
+                            handleFilters(filters, 'price')
+                        }
+                    />
                 </Col>
             </Row>
 
