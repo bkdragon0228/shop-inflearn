@@ -88,10 +88,21 @@ const LandingPage = () => {
                     Let's travel anywhere <RocketOutlined />
                 </h2>
             </div>
-            <CheckBox
-                list={continents}
-                handleFilters={(filters) => handleFilters(filters, 'continent')} // 하위 state를 받아오기위해
-            />
+
+            <Row gutter={[16, 16]}>
+                <Col lg={12} xs={24}>
+                    <CheckBox
+                        list={continents}
+                        handleFilters={(filters) =>
+                            handleFilters(filters, 'continent')
+                        } // 하위 state를 받아오기위해
+                    />
+                </Col>
+                <Col lg={12} xs={24}>
+                    {/* radio box */}
+                </Col>
+            </Row>
+
             <Row gutter={[16, 16]}>{renderCards}</Row>
 
             <br />
