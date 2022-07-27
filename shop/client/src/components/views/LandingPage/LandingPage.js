@@ -8,6 +8,7 @@ import { continents, price } from './Sections/Datas';
 import ImageSlider from '../../../utils/ImageSlider';
 import CheckBox from './Sections/CheckBox';
 import RadioBox from './Sections/RadioBox';
+import SearchFeature from './Sections/SearchFeature';
 
 const { Meta } = Card;
 
@@ -21,6 +22,8 @@ const LandingPage = () => {
         continents: [],
         price: [],
     });
+
+    const [searchTerm, setSearchTerm] = useState('');
 
     const landingProducts = async (body) => {
         try {
@@ -100,6 +103,10 @@ const LandingPage = () => {
         setFilters(newFilters);
         setSkip(0);
     };
+
+    const updateSearchTerm = (newSearchTerm) => {
+        setSearchTerm(newSearchTerm);
+    };
     return (
         <div style={{ width: '75%', margin: '3rem auto' }}>
             <div style={{ textAlign: 'center' }}>
@@ -127,6 +134,20 @@ const LandingPage = () => {
                     />
                 </Col>
             </Row>
+            {/* 검색 바 */}
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    margin: '1rem auto',
+                }}
+            >
+                <SearchFeature
+                    refreshFunction={(searchTerm) =>
+                        updateSearchTerm(searchTerm)
+                    }
+                />
+            </div>
 
             <Row gutter={[16, 16]}>{renderCards}</Row>
 
