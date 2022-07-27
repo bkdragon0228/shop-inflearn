@@ -37,7 +37,7 @@ const CheckBox = ({ list, handleFilters }) => {
     // 의미없는 div 사용을 피하려고 React.Fragment를 사용
     return (
         <div>
-            <Collapse defaultActiveKey={['1']}>
+            <Collapse defaultActiveKey={['0']}>
                 <Panel header="Continent" key="1">
                     {renderCheckboxList()}
                 </Panel>

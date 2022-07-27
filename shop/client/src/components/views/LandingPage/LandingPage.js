@@ -10,6 +10,7 @@ import CheckBox from './Sections/CheckBox';
 import RadioBox from './Sections/RadioBox';
 import SearchFeature from './Sections/SearchFeature';
 import SearchOnClient from './Sections/SearchOnClient';
+import { Link } from 'react-router-dom';
 
 const { Meta } = Card;
 
@@ -63,11 +64,14 @@ const LandingPage = () => {
     const renderCards = products.map((product, index) => {
         return (
             <Col lg={6} md={8} xs={24} key={index}>
-                <Card cover={<ImageSlider images={product.images} />}>
-                    <Meta
-                        title={product.title}
-                        description={`$${product.price}`}
-                    />
+                <Card
+                    cover={
+                        <Link to={`/product/${product._id}`}>
+                            <ImageSlider images={product.images} />
+                        </Link>
+                    }
+                >
+                    <Meta title={product.title} description={`$${product.price}`} />
                 </Card>
             </Col>
         );
@@ -150,19 +154,12 @@ const LandingPage = () => {
                 <Col lg={12} xs={24}>
                     <CheckBox
                         list={continents}
-                        handleFilters={(filters) =>
-                            handleFilters(filters, 'continent')
-                        } // 하위 state를 받아오기위해
+                        handleFilters={(filters) => handleFilters(filters, 'continent')} // 하위 state를 받아오기위해
                     />
                 </Col>
                 <Col lg={12} xs={24}>
                     {/* radio box */}
-                    <RadioBox
-                        list={price}
-                        handleFilters={(filters) =>
-                            handleFilters(filters, 'price')
-                        }
-                    />
+                    <RadioBox list={price} handleFilters={(filters) => handleFilters(filters, 'price')} />
                 </Col>
             </Row>
             {/* 검색 바 */}
@@ -173,16 +170,8 @@ const LandingPage = () => {
                     margin: '1rem auto',
                 }}
             >
-                <SearchOnClient
-                    refreshFunction={(searchValue) =>
-                        updateSearchValueOnClient(searchValue)
-                    }
-                />
-                <SearchFeature
-                    refreshFunction={(searchTerm) =>
-                        updateSearchTerm(searchTerm)
-                    }
-                />
+                <SearchOnClient refreshFunction={(searchValue) => updateSearchValueOnClient(searchValue)} />
+                <SearchFeature refreshFunction={(searchTerm) => updateSearchTerm(searchTerm)} />
             </div>
 
             <Row gutter={[16, 16]}>{renderCards}</Row>

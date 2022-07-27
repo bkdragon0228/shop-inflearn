@@ -11,6 +11,24 @@ const { Product } = require('../models/Product');
 //     fs.mkdirSync('uploads');
 // }
 
+router.get('/products_by_id/:id', (req, res) => {
+    // 상품 id를 이용해서 같은 id를 가진 상품의 정보를 가져오자.
+
+    let type = req.query.type;
+    // let productId = req.query.id;
+    let productId = req.params.id;
+
+    console.log(type, productId);
+
+    Product.find({ _id: productId })
+        .populate('writer')
+        .exec((err, productInfo) => {
+            if (err) return res.status(400).send(err);
+
+            return res.status(200).json({ success: true, productInfo });
+        });
+});
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         //저장위치
@@ -35,16 +53,6 @@ router.post('/image', (req, res) => {
             filePath: res.req.file.path, // 저장에 성공하면 파일 경로와 이름을 보내준다.
             fileName: res.req.file.filename,
         });
-    });
-});
-
-router.post('/', (req, res) => {
-    // 받아온 정보 db에 저장
-    const product = new Product(req.body);
-    product.save((err) => {
-        if (err) return res.status(400).json({ success: false, err });
-
-        return res.status(200).json({ success: true }); // 이 json이 클라이언트에서 받은 res의 data안에 들어간다.
     });
 });
 
@@ -104,6 +112,16 @@ router.post('/products', (req, res) => {
                 });
             });
     }
+});
+
+router.post('/', (req, res) => {
+    // 받아온 정보 db에 저장
+    const product = new Product(req.body);
+    product.save((err) => {
+        if (err) return res.status(400).json({ success: false, err });
+
+        return res.status(200).json({ success: true }); // 이 json이 클라이언트에서 받은 res의 data안에 들어간다.
+    });
 });
 
 module.exports = router;
