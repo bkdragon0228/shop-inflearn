@@ -69,15 +69,33 @@ const LandingPage = () => {
         );
     });
 
+    const handleFrice = (value) => {
+        const data = price;
+        let arr = [];
+
+        for (let key in data) {
+            if (data[key]._id === parseInt(value, 10)) {
+                arr = data[key].array;
+            }
+        }
+
+        return arr;
+    };
     const handleFilters = (filters, category) => {
         const newFilters = { ...Filters }; // state를 바로 수정하지 않기 위해
         newFilters[category] = filters;
+
+        if (category === 'price') {
+            let priceValues = handleFrice(filters);
+            newFilters[category] = priceValues; // 배열값임
+        }
 
         let body = {
             skip: 0,
             limit: limit,
             filters: newFilters,
         };
+
         landingProducts(body);
         setFilters(newFilters);
         setSkip(0);

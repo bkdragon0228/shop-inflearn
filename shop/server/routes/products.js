@@ -58,11 +58,21 @@ router.post('/products', (req, res) => {
     for (let key in req.body.filters) {
         // key는 category, continent나 price이다.
         if (req.body.filters[key].length > 0) {
-            findArgs[key] = req.body.filters[key];
+            if (key === 'price') {
+                findArgs[key] = {
+                    // mongoose 내장 기능
+                    $gte: req.body.filters[key][0], // greater than equal
+                    $lte: req.body.filters[key][1], // less than equal
+                };
+            } else {
+                findArgs[key] = req.body.filters[key];
+            }
         }
     }
 
-    Product.find(findArgs) // { continent: [ 3 ] } 이런식
+    // console.log(findArgs); //  { price: { '$gte': 300, '$lte': 349 }, continent: [ 5, 3 ] } 이런식~
+
+    Product.find(findArgs) // 객체식으로 넣으면 필터링,  { continent: [ 3 ], price : {뭐이상 뭐이하} } 이런식
         .populate('writer') // 타 컬렉션(모델)의 모든 정보를 가져온다.
         .skip(skip)
         .limit(limit)
