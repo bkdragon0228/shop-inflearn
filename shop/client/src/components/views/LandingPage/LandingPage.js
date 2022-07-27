@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Col, Row, Card } from 'antd';
 import { RocketOutlined } from '@ant-design/icons';
 
-import { continents } from './Sections/Datas';
+import { continents, price } from './Sections/Datas';
 
 import ImageSlider from '../../../utils/ImageSlider';
 import CheckBox from './Sections/CheckBox';
