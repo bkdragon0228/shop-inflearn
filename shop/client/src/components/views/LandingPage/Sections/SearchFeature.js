@@ -11,16 +11,16 @@ const SearchFeature = ({ refreshFunction }) => {
         setSearchTerm(e.currentTarget.value);
         refreshFunction(searchTerm);
     };
+
     return (
         <div>
             <Search
-                placeholder="input search text"
+                placeholder="filtering on Database"
                 onChange={searchHandler}
                 style={{
                     width: 200,
                 }}
                 value={searchTerm}
-                onSubmit
             />
         </div>
     );

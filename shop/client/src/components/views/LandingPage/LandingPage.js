@@ -9,6 +9,7 @@ import ImageSlider from '../../../utils/ImageSlider';
 import CheckBox from './Sections/CheckBox';
 import RadioBox from './Sections/RadioBox';
 import SearchFeature from './Sections/SearchFeature';
+import SearchOnClient from './Sections/SearchOnClient';
 
 const { Meta } = Card;
 
@@ -117,6 +118,26 @@ const LandingPage = () => {
         setSearchTerm(newSearchTerm);
         setSkip(0);
     };
+
+    const updateSearchValueOnClient = (searchValue) => {
+        const newProducts = [];
+        console.log(searchValue);
+        for (let key in products) {
+            if (products[key].title === searchValue) {
+                newProducts.push(products[key]);
+            }
+        }
+        setProducts(newProducts);
+
+        if (searchValue === '') {
+            let body = {
+                skip: 0,
+                limit: limit,
+            };
+            landingProducts(body);
+            setSkip(0);
+        }
+    };
     return (
         <div style={{ width: '75%', margin: '3rem auto' }}>
             <div style={{ textAlign: 'center' }}>
@@ -152,6 +173,11 @@ const LandingPage = () => {
                     margin: '1rem auto',
                 }}
             >
+                <SearchOnClient
+                    refreshFunction={(searchValue) =>
+                        updateSearchValueOnClient(searchValue)
+                    }
+                />
                 <SearchFeature
                     refreshFunction={(searchTerm) =>
                         updateSearchTerm(searchTerm)
