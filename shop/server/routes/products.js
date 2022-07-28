@@ -18,7 +18,7 @@ router.get('/products_by_id/:id', (req, res) => {
     // let productId = req.query.id;
     let productId = req.params.id;
 
-    console.log(type, productId);
+    // console.log(type, productId);
 
     Product.find({ _id: productId })
         .populate('writer')
