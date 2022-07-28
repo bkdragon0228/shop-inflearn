@@ -49,7 +49,7 @@ const DetailProductPage = () => {
                 </Col>
                 <Col lg={12} sm={24}>
                     {/* 상품정보 */}
-                    <ProductInfo />
+                    <ProductInfo detail={product} />
                 </Col>
             </Row>
         </DetailProductContainer>
