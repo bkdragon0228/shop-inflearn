@@ -13,7 +13,7 @@ const DetailProductContainer = styled.div`
     padding: 3rem 4rem;
 `;
 
-const detailProductHeader = styled.header`
+const DetailProductHeader = styled.header`
     display: flex;
     justify-content: center;
 `;
@@ -37,15 +37,15 @@ const DetailProductPage = () => {
 
     return (
         <DetailProductContainer>
-            <detailProductHeader style={{ display: 'flex', justifyContent: 'center' }}>
+            <DetailProductHeader style={{ display: 'flex', justifyContent: 'center' }}>
                 <h2>{product.title}</h2>
-            </detailProductHeader>
+            </DetailProductHeader>
             <br />
 
             <Row gutter={[16, 16]}>
                 <Col lg={12} sm={24}>
                     {/* 상품 이미지 */}
-                    <ProductImage />
+                    <ProductImage detail={product} />
                 </Col>
                 <Col lg={12} sm={24}>
                     {/* 상품정보 */}
