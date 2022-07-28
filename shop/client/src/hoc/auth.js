@@ -28,7 +28,7 @@ export default function Auth(SpecificComponent, option, adminRoute = null) {
                     if (adminRoute && !res.payload.isAdmin) {
                         navi('/');
                     } else {
-                        if (!option) {
+                        if (option === false) {
                             navi('/');
                         }
                     }

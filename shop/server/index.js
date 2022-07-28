@@ -84,6 +84,8 @@ app.get('/api/users/auth', auth, (req, res) => {
         isAuth: true,
         email: req.user.email,
         role: req.user.role,
+        cart: req.user.cart,
+        history: req.user.history,
     });
 });
 
@@ -98,9 +100,48 @@ app.get('/api/users/logout', auth, (req, res) => {
 
 app.post('/api/users/addToCart', auth, (req, res) => {
     // 유저컬렉션의 해당 유저의 정보를 가져오기
-    // 카트에 상품이 이미 있는지 확인
-    // 상품이 이미 있을떄
-    // 상품이 없을때
+
+    User.findOne({ _id: req.user._id }, (err, userInfo) => {
+        // 카트에 상품이 이미 있는지 확인
+        let dulpicate = false;
+        userInfo.cart.forEach((item) => {
+            if (item.id === req.body.productId) {
+                dulpicate = true; // 상품이 들어있다.
+            }
+        });
+
+        // 상품이 이미 있을 때.
+        if (dulpicate) {
+            User.findOneAndUpdate(
+                { id: req.user._id, 'cart.id': req.body.productId },
+                { $inc: { 'cart.$.quantity': 1 } },
+                { new: true }, // 업데이트된 유저정보를 받기 위해서 넣어야하는 옵션
+                (err, userInfo) => {
+                    if (err) return res.status(400).json({ success: false, err });
+                    return res.status(200).send(userInfo.cart);
+                }
+            );
+        } else {
+            // 상품이 없을때, 새로 넣을 때 아이디, 개수, 날짜 정보 다 넣어줘야함.
+            User.findOneAndUpdate(
+                { id: req.user._id },
+                {
+                    $push: {
+                        cart: {
+                            id: req.body.productId,
+                            quantity: 1,
+                            date: Date.now(),
+                        },
+                    },
+                },
+                { new: true },
+                (err, userInfo) => {
+                    if (err) return res.status(400).json({ success: false, err });
+                    return res.status(200).send(userInfo.cart); // 카드 정보만 보낸다.
+                }
+            );
+        }
+    });
 });
 
 const port = 5000;
