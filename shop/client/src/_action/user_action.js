@@ -45,6 +45,16 @@ export function addToCart(id) {
 export function getCartItems(cartIds, userCart) {
     const request = axios.get(`/api/product/products_by_id/${cartIds}?type=array`).then((res) => {
         // cart의 담은 상품 정보를 product 콜렉션에서 가져온 후 quantity정보를 넣어준다.
+
+        userCart.forEach((cartItem) => {
+            res.data.productInfo.forEach((productDetail, index) => {
+                if (cartItem.id === productDetail._id) {
+                    res.data.productInfo[index].quantity = cartItem.quantity; // res에 원래 없던 quantity정보를 추가
+                }
+            });
+        });
+
+        return res.data;
     });
 
     return {
