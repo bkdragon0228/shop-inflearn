@@ -1,6 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getCartItems } from '../../../_action/user_action';
+import UserCardBlock from './Sections/UserCardBlock';
+import styled from 'styled-components';
+
+const CartPageContainer = styled.div`
+    width: 85%;
+    margin: 3rem auto;
+`;
 
 const CartPage = ({ user }) => {
     // hoc, auth에서 다 넘겨주는 중
@@ -22,7 +29,14 @@ const CartPage = ({ user }) => {
             }
         }
     }, [user.userData]);
-    return <div>CartPage</div>;
+
+    return (
+        <CartPageContainer>
+            <h1>My Cart</h1>
+            <UserCardBlock products={user.cartDetail && user.cartDetail.productInfo} />
+            {/* 오류방지로 있는지 확인하고  */}
+        </CartPageContainer>
+    );
 };
 
 export default CartPage;
