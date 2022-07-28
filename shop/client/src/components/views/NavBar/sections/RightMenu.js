@@ -1,5 +1,6 @@
 import React from 'react';
-import { Menu } from 'antd';
+import { Menu, Badge } from 'antd';
+import { ClockCircleOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -35,6 +36,13 @@ function RightMenu(props) {
             <Menu mode={props.mode}>
                 <Menu.Item key="upload">
                     <Link to="/product/upload">Upload</Link>
+                </Menu.Item>
+                <Menu.Item key="cart">
+                    <Link to="/user/cart">
+                        <Badge count={3}>
+                            <ClockCircleOutlined />
+                        </Badge>
+                    </Link>
                 </Menu.Item>
                 <Menu.Item key="logout">
                     <a onClick={logoutHandler}>Logout</a>
