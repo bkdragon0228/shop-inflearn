@@ -19,6 +19,7 @@ app.use('/api/product', require('./routes/products'));
 const { User } = require('./models/User');
 
 const mongoose = require('mongoose');
+const { application } = require('express');
 mongoose
     .connect(config.mongoURI, {})
     .then(() => console.log('DB connection'))
@@ -69,9 +70,7 @@ app.post('/api/users/login', (req, res) => {
                 if (err) return res.status(400).send(err);
 
                 // 토큰을 저장해야한다. 쿠키, 로컬스토리지
-                res.cookie(`x_auth`, user.token)
-                    .status(200)
-                    .json({ loginSuccess: true, userId: user._id });
+                res.cookie(`x_auth`, user.token).status(200).json({ loginSuccess: true, userId: user._id });
             });
         });
     });
@@ -95,6 +94,13 @@ app.get('/api/users/logout', auth, (req, res) => {
             success: true,
         });
     });
+});
+
+app.post('/api/users/addToCart', auth, (req, res) => {
+    // 유저컬렉션의 해당 유저의 정보를 가져오기
+    // 카트에 상품이 이미 있는지 확인
+    // 상품이 이미 있을떄
+    // 상품이 없을때
 });
 
 const port = 5000;

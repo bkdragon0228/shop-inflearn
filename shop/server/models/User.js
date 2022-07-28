@@ -35,6 +35,15 @@ const userSchema = mongoose.Schema({
     tokenExp: {
         type: Number,
     },
+    // 장바구니를 만들기위해 유저 컬렉션에 추가!
+    cart: {
+        type: Array,
+        default: [],
+    },
+    history: {
+        type: Array,
+        default: [],
+    },
 });
 
 // register route에서 save하기 전에!

@@ -1,11 +1,9 @@
 import axios from 'axios';
-import { LOGIN_USER, REGISTER_USER, AUTH_USER } from './types';
+import { LOGIN_USER, REGISTER_USER, AUTH_USER, ADD_TO_CART } from './types';
 
 export function loginUser(dataToSubmit) {
     // 서버에서 받은 데이터를 저장
-    const request = axios
-        .post('/api/users/login', dataToSubmit)
-        .then((res) => res.data);
+    const request = axios.post('/api/users/login', dataToSubmit).then((res) => res.data);
 
     // reducer에 넘겨줄 객체
     return {
@@ -15,9 +13,7 @@ export function loginUser(dataToSubmit) {
 }
 
 export function registerUser(dataToSubmit) {
-    const request = axios
-        .post('/api/users/register', dataToSubmit)
-        .then((res) => res.data);
+    const request = axios.post('/api/users/register', dataToSubmit).then((res) => res.data);
 
     return {
         type: REGISTER_USER,
@@ -30,6 +26,18 @@ export function auth() {
 
     return {
         type: AUTH_USER,
+        payload: request,
+    };
+}
+
+export function addToCart(id) {
+    let body = {
+        productId: id,
+    };
+    const request = axios.post('/api/users/addToCart', body).then((res) => res.data);
+
+    return {
+        type: ADD_TO_CART,
         payload: request,
     };
 }

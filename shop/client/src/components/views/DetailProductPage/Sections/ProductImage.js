@@ -14,7 +14,7 @@ const ProductImage = ({ detail }) => {
                 });
             });
 
-            setImages((prev) => [...prev, ...images]);
+            setImages(images);
         }
     }, [detail]); // detail의 값이 바뀔때마다 실행
 
