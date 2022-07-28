@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { LOGIN_USER, REGISTER_USER, AUTH_USER, ADD_TO_CART } from './types';
+import { LOGIN_USER, REGISTER_USER, AUTH_USER, ADD_TO_CART, GET_CART_ITEMS } from './types';
 
 export function loginUser(dataToSubmit) {
     // 서버에서 받은 데이터를 저장
@@ -38,6 +38,17 @@ export function addToCart(id) {
 
     return {
         type: ADD_TO_CART,
+        payload: request,
+    };
+}
+
+export function getCartItems(cartIds, userCart) {
+    const request = axios.get(`/api/product/products_by_id/${cartIds}?type=array`).then((res) => {
+        // cart의 담은 상품 정보를 product 콜렉션에서 가져온 후 quantity정보를 넣어준다.
+    });
+
+    return {
+        type: GET_CART_ITEMS,
         payload: request,
     };
 }

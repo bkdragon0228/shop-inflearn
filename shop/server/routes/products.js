@@ -16,11 +16,17 @@ router.get('/products_by_id/:id', (req, res) => {
 
     let type = req.query.type;
     // let productId = req.query.id;
-    let productId = req.params.id;
+    let productIds = req.params.id;
 
-    // console.log(type, productId);
+    console.log(productIds);
 
-    Product.find({ _id: productId })
+    if (type === 'array') {
+        // 배열로 넘겼음에도  62df962718be744d0c147786,62df95e818be744d0c147772 이런 문자열로 넘오기때문에 다시 split
+        let ids = req.params.id.split(',');
+        productIds = ids.map((item) => item);
+    }
+
+    Product.find({ _id: { $in: productIds } }) // 여러개도 커버가능한 형태
         .populate('writer')
         .exec((err, productInfo) => {
             if (err) return res.status(400).send(err);
