@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getCartItems } from '../../../_action/user_action';
 import UserCardBlock from './Sections/UserCardBlock';
@@ -12,6 +12,8 @@ const CartPageContainer = styled.div`
 const CartPage = ({ user }) => {
     // hoc, auth에서 다 넘겨주는 중
 
+    const [totalPrice, setTotalPrice] = useState(0);
+
     const dispatch = useDispatch();
     useEffect(() => {
         let cartItemIds = [];
@@ -22,10 +24,14 @@ const CartPage = ({ user }) => {
                     cartItemIds.push(item.id);
                 });
 
-                dispatch(getCartItems(cartItemIds, user.userData.cart));
                 // store가 업데이트됐다. cartDetail정보가 추가되었음.
                 // 다시 설명하면 cartDetail은 db에 저장되어있던 product정보에
                 // user 컬렉션에 저장되어있는 quantity(담은 개수)  정보를 포함한 정보이다.
+                dispatch(getCartItems(cartItemIds, user.userData.cart)).then((res) => {
+                    const products = res.payload;
+                    let total = products.reduce((acc, cur) => acc + +cur.price * +cur.quantity, 0);
+                    setTotalPrice(total);
+                });
             }
         }
     }, [user.userData]);
@@ -33,8 +39,12 @@ const CartPage = ({ user }) => {
     return (
         <CartPageContainer>
             <h1>My Cart</h1>
-            <UserCardBlock products={user.cartDetail} />
-            {/* 오류방지로 있는지 확인하고  */}
+            <div>
+                <UserCardBlock products={user.cartDetail} />
+            </div>
+            <div style={{ marginTop: '3rem' }}>
+                <h2>Total : Amount : {totalPrice}</h2>
+            </div>
         </CartPageContainer>
     );
 };
