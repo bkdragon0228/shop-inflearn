@@ -26,7 +26,7 @@ const DetailProductPage = () => {
             // const response = await axios.get(`/api/product/products_by_id?id=${productId}&type=single`);
             // 쿼리와 파라미터를 섞은 uri, 파라미터는 주로 고유한 값에 사용
             const response = await axios.get(`/api/product/products_by_id/${productId}?type=single`);
-            setProduct(response.data.productInfo[0]);
+            setProduct(response.data[0]);
         } catch (err) {
             alert('상세 정보 가져오기를 실패했습니다.');
         }

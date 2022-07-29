@@ -118,7 +118,7 @@ app.post('/api/users/addToCart', auth, (req, res) => {
                 { new: true }, // 업데이트된 유저정보를 받기 위해서 넣어야하는 옵션
                 (err, userInfo) => {
                     if (err) return res.status(400).json({ success: false, err });
-                    return res.status(200).send(userInfo.cart);
+                    return res.status(200).json({ success: true, cartInfo: userInfo.cart });
                 }
             );
         } else {
@@ -137,7 +137,7 @@ app.post('/api/users/addToCart', auth, (req, res) => {
                 { new: true },
                 (err, userInfo) => {
                     if (err) return res.status(400).json({ success: false, err });
-                    return res.status(200).send(userInfo.cart); // 카드 정보만 보낸다.
+                    return res.status(200).json({ success: true, cartInfo: userInfo.cart }); // 카드 정보만 보낸다.
                 }
             );
         }

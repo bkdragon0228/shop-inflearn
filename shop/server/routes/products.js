@@ -31,7 +31,7 @@ router.get('/products_by_id/:id', (req, res) => {
         .exec((err, productInfo) => {
             if (err) return res.status(400).send(err);
 
-            return res.status(200).json({ success: true, productInfo });
+            return res.status(200).send(productInfo);
         });
 });
 

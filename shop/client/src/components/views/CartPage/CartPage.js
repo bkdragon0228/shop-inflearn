@@ -33,7 +33,7 @@ const CartPage = ({ user }) => {
     return (
         <CartPageContainer>
             <h1>My Cart</h1>
-            <UserCardBlock products={user.cartDetail && user.cartDetail.productInfo} />
+            <UserCardBlock products={user.cartDetail} />
             {/* 오류방지로 있는지 확인하고  */}
         </CartPageContainer>
     );

@@ -8,7 +8,13 @@ const ProductInfo = ({ detail }) => {
         // 필요한 정보를 cart 필드에 넣어준다.
         // cart필드는 user 컬렉션 안에 있음으로 리덕스(유저를 store에서 관리했으니)action 함수를 이용한다.
 
-        dispatch(addToCart(detail._id));
+        dispatch(addToCart(detail._id)).then((res) => {
+            if (res.payload.success) {
+                alert('장바구니에 추가되었습니다.');
+            } else {
+                alert('장바구니에 추가하지 못했습니다.');
+            }
+        });
     };
     return (
         <div>

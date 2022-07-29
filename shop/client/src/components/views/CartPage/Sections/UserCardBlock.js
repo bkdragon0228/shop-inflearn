@@ -13,7 +13,7 @@ const talbeUtil = css`
 `;
 const TableRow = styled.tr`
     ${talbeUtil}
-    &:nth-child(1) {
+    &:nth-child(even) {
         background-color: #dddddd;
     }
 `;
