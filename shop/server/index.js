@@ -17,9 +17,10 @@ app.use(cookieParser());
 app.use('/api/product', require('./routes/products'));
 
 const { User } = require('./models/User');
+const { Product } = require('./models/Product');
 
 const mongoose = require('mongoose');
-const { application } = require('express');
+
 mongoose
     .connect(config.mongoURI, {})
     .then(() => console.log('DB connection'))
@@ -70,7 +71,9 @@ app.post('/api/users/login', (req, res) => {
                 if (err) return res.status(400).send(err);
 
                 // 토큰을 저장해야한다. 쿠키, 로컬스토리지
-                res.cookie(`x_auth`, user.token).status(200).json({ loginSuccess: true, userId: user._id });
+                res.cookie(`x_auth`, user.token)
+                    .status(200)
+                    .json({ loginSuccess: true, userId: user._id });
             });
         });
     });
@@ -117,8 +120,11 @@ app.post('/api/users/addToCart', auth, (req, res) => {
                 { $inc: { 'cart.$.quantity': 1 } },
                 { new: true }, // 업데이트된 유저정보를 받기 위해서 넣어야하는 옵션
                 (err, userInfo) => {
-                    if (err) return res.status(400).json({ success: false, err });
-                    return res.status(200).json({ success: true, cartInfo: userInfo.cart });
+                    if (err)
+                        return res.status(400).json({ success: false, err });
+                    return res
+                        .status(200)
+                        .json({ success: true, cartInfo: userInfo.cart });
                 }
             );
         } else {
@@ -136,12 +142,45 @@ app.post('/api/users/addToCart', auth, (req, res) => {
                 },
                 { new: true },
                 (err, userInfo) => {
-                    if (err) return res.status(400).json({ success: false, err });
-                    return res.status(200).json({ success: true, cartInfo: userInfo.cart }); // 카드 정보만 보낸다.
+                    if (err)
+                        return res.status(400).json({ success: false, err });
+                    return res
+                        .status(200)
+                        .json({ success: true, cartInfo: userInfo.cart }); // 카드 정보만 보낸다.
                 }
             );
         }
     });
+});
+
+app.get('/api/users/removeFromCart/:id', auth, (req, res) => {
+    let productId = req.params.id;
+
+    console.log(productId);
+
+    // cart안에서 지우려는 상품을 지우기
+
+    User.findOneAndUpdate(
+        { _id: req.user._id },
+        { $pull: { cart: { id: productId } } }, // push <-> pull
+        { new: true },
+        (err, userInfo) => {
+            // 현재 지운 건 user collection의 cart안에 요소
+            // product collection에서 현재 남아있는 상품들의 정보와 cart에 남은 요소들로
+
+            let cart = userInfo.cart;
+            let Ids = cart.map((item) => {
+                return item.id; // 남아있는 상품 아이디!
+            });
+
+            Product.find({ _id: { $in: Ids } })
+                .populate('writer')
+                .exec((err, productInfo) => {
+                    // 새로운 cartDetail을 만들기 위해 같이 return 한다.
+                    return res.status(200).json({ productInfo, cart });
+                });
+        }
+    );
 });
 
 const port = 5000;

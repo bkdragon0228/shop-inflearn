@@ -19,13 +19,7 @@ const store = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        <Provider
-            store={store(
-                Reducer,
-                window.__REDUX_DEVTOOLS_EXTENSION__ &&
-                    window.__REDUX_DEVTOOLS_EXTENSION__()
-            )}
-        >
+        <Provider store={store(Reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())}>
             <App />
         </Provider>
     </React.StrictMode>

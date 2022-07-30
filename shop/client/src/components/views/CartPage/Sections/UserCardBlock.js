@@ -21,7 +21,7 @@ const TableRow = styled.tr`
 const TableData = styled.td`
     ${talbeUtil}
 `;
-const UserCardBlock = ({ products }) => {
+const UserCardBlock = ({ products, removeItem }) => {
     // helper method
     const renderImage = (images) => {
         if (images.length > 0) {
@@ -35,12 +35,19 @@ const UserCardBlock = ({ products }) => {
         products.map((product, index) => (
             <TableRow key={index}>
                 <TableData>
-                    <img style={{ width: '70px' }} alt="product" src={renderImage(product.images)}></img>
+                    <img
+                        style={{ width: '70px' }}
+                        alt="product"
+                        src={renderImage(product.images)}
+                    ></img>
                 </TableData>
                 <TableData>{product.quantity}</TableData>
                 <TableData>{product.price}</TableData>
                 <TableData>
-                    <button>Romove</button>
+                    {/* id를 이용해 상품을 삭제 */}
+                    <button onClick={() => removeItem(product._id)}>
+                        Remove
+                    </button>
                 </TableData>
             </TableRow>
         ));

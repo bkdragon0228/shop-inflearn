@@ -11,6 +11,7 @@ import RadioBox from './Sections/RadioBox';
 import SearchFeature from './Sections/SearchFeature';
 import SearchOnClient from './Sections/SearchOnClient';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const { Meta } = Card;
 
