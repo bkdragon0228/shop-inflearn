@@ -4,11 +4,16 @@ import { getCartItems, removeCartItem } from '../../../_action/user_action';
 import UserCardBlock from './Sections/UserCardBlock';
 import styled from 'styled-components';
 
+import { ShoppingCartOutlined } from '@ant-design/icons';
+
 const CartPageContainer = styled.div`
     width: 85%;
     margin: 3rem auto;
 `;
 
+const ShoppingCartIcon = styled(ShoppingCartOutlined)`
+    font-size: 200px;
+`;
 const CartPage = ({ user }) => {
     // hoc, auth에서 다 넘겨주는 중
 
@@ -47,12 +52,11 @@ const CartPage = ({ user }) => {
     };
 
     let removeFromCart = (productId) => {
-        dispatch(removeCartItem(productId));
-        // .then((res) => {
-        //     if (res.payload.productInfo.length <= 0) {
-        //         setShowTotal(false);
-        //     }
-        // });
+        dispatch(removeCartItem(productId)).then((res) => {
+            if (res.payload.productInfo.length <= 0) {
+                setShowTotal(false);
+            }
+        });
     };
 
     return (
@@ -65,9 +69,20 @@ const CartPage = ({ user }) => {
                 />
             </div>
 
-            {ShowTotal && (
+            {ShowTotal ? (
                 <div style={{ marginTop: '3rem' }}>
                     <h2>Total : Amount : {totalPrice}</h2>
+                </div>
+            ) : (
+                <div
+                    style={{
+                        width: '100%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        marginTop: '20px',
+                    }}
+                >
+                    <ShoppingCartIcon />
                 </div>
             )}
         </CartPageContainer>
