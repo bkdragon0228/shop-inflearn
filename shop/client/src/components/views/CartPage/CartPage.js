@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import Paypal from '../../../utils/Paypal';
 
 import { ShoppingCartOutlined } from '@ant-design/icons';
+import { Button, Result } from 'antd';
 
 const CartPageContainer = styled.div`
     width: 85%;
@@ -24,6 +25,8 @@ const CartPage = ({ user }) => {
 
     const [totalPrice, setTotalPrice] = useState(0);
     const [ShowTotal, setShowTotal] = useState(false);
+
+    const [showSuccess, setShowSuccess] = useState(false);
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -73,6 +76,7 @@ const CartPage = ({ user }) => {
         ).then((res) => {
             if (res.payload.success) {
                 setShowTotal(false);
+                setShowSuccess(true);
             } else {
             }
         });
@@ -91,6 +95,11 @@ const CartPage = ({ user }) => {
                 <div style={{ marginTop: '3rem' }}>
                     <h2>Total : Amount : {totalPrice}</h2>
                 </div>
+            ) : showSuccess ? (
+                <Result
+                    status="success"
+                    title="Successfully Purchased Cloud Items"
+                />
             ) : (
                 <div
                     style={{

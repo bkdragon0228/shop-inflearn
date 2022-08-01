@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { auth } = require('./middleware/auth');
 const config = require('./config/key');
+const async = require('async');
 
 app.use('/uploads', express.static('uploads')); // 정적인 파일 제공
 
@@ -18,6 +19,7 @@ app.use('/api/product', require('./routes/products'));
 
 const { User } = require('./models/User');
 const { Product } = require('./models/Product');
+const { Payment } = require('./models/Payment');
 
 const mongoose = require('mongoose');
 
@@ -155,9 +157,84 @@ app.post('/api/users/addToCart', auth, (req, res) => {
 
 app.post('/api/users/successBuy', auth, (req, res) => {
     // user 컬렉션 안에 history 필드안에  간단한 결제 정보 넣어주기
+
+    let history = [];
+    let transactionData = {};
+
+    req.body.cartDetail.forEach((item) => {
+        history.push({
+            dataOfPurchase: Date.now(),
+            name: item.title,
+            id: item._id,
+            price: item.price,
+            quantity: item.quantity,
+            paymentId: req.body.paymentData.paymentId,
+        });
+    });
+
     // payment 컬렉션 안에 자세한 결제 정보 넣어주기
-    // product 컬렉션 안에 sold 필드 정보 업데이트 시켜주기
+    transactionData.user = {
+        id: req.user._id,
+        name: req.user.name,
+        email: req.user.email,
+    };
+
+    transactionData.data = req.body.paymentData;
+    transactionData.product = history;
+
+    // history, transactionData 실제 삽입과정
+    User.findOneAndUpdate(
+        { _id: req.user._id },
+        { $push: { history: history }, $set: { cart: [] } },
+        { new: true },
+        (err, userInfo) => {
+            if (err) return res.status(400).json({ success: false, err });
+
+            const payment = new Payment(transactionData);
+            payment.save((err, doc) => {
+                if (err) return res.status(400).json({ success: false, err });
+
+                // product 컬렉션 안에 sold 필드 정보 업데이트 시켜주기
+
+                let products = []; // 상품당 몇개 샀는지 확인하기 위한 배열
+                doc.product.forEach((item) => {
+                    products.push({ id: item.id, quantity: item.quantity });
+                });
+
+                // async 모듈
+
+                async.eachSeries(
+                    products,
+                    (item, callback) => {
+                        Product.update(
+                            { _id: item._id },
+                            {
+                                $inc: {
+                                    sold: item.quantity,
+                                },
+                            },
+                            { new: false },
+                            callback
+                        );
+                    },
+                    (err) => {
+                        if (err)
+                            return res
+                                .status(400)
+                                .json({ success: false, err });
+
+                        return res.status(200).json({
+                            success: true,
+                            cart: userInfo.cart,
+                            cartDetail: [],
+                        });
+                    }
+                );
+            });
+        }
+    );
 });
+
 app.get('/api/users/removeFromCart/:id', auth, (req, res) => {
     let productId = req.params.id;
 
