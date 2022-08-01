@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { getCartItems, removeCartItem } from '../../../_action/user_action';
 import UserCardBlock from './Sections/UserCardBlock';
 import styled from 'styled-components';
+import Paypal from '../../../utils/Paypal';
 
 import { ShoppingCartOutlined } from '@ant-design/icons';
 
@@ -85,6 +86,8 @@ const CartPage = ({ user }) => {
                     <ShoppingCartIcon />
                 </div>
             )}
+
+            <Paypal />
         </CartPageContainer>
     );
 };

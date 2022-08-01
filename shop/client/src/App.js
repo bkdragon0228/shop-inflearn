@@ -11,50 +11,50 @@ import CartPage from './components/views/CartPage/CartPage';
 
 import styled, { keyframes } from 'styled-components';
 
-// const animation = keyframes`
+const animation = keyframes`
 
-//     50% {
-//         transform: scale(1.3);
-//     }
-// `;
-// const Title = styled.div`
-//     color: ${(props) => props.theme.textColor};
+    50% {
+        transform: scale(1.3);
+    }
+`;
+const Title = styled.div`
+    color: ${(props) => props.theme.textColor};
 
-//     h1 {
-//         font-size: 30px;
-//         margin: 0 0 10px 0;
-//     }
-// `;
+    h1 {
+        font-size: 30px;
+        margin: 0 0 10px 0;
+    }
+`;
 
-// const Notice = styled.div`
-//     padding: 20px;
-//     border: 2px solid #aaa;
-//     background-color: ${(props) => props.theme.backgroundColor};
+const Notice = styled.div`
+    padding: 20px;
+    border: 2px solid #aaa;
+    background-color: ${(props) => props.theme.backgroundColor};
 
-//     ${Title}:hover {
-//         color: red;
-//     }
-// `;
+    ${Title}:hover {
+        color: red;
+    }
+`;
 
-// const Button = styled.button`
-//     display: block;
-//     padding: 6px 10px;
-//     color: #fff;
-//     font-size: 18px;
-//     border-radius: 3px;
-//     background-color: crimson;
-//     border: 0;
+const Button = styled.button`
+    display: block;
+    padding: 6px 10px;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 3px;
+    background-color: crimson;
+    border: 0;
 
-//     &:hover {
-//         background-color: teal;
-//     }
-// `;
+    &:hover {
+        background-color: teal;
+    }
+`;
 
-// const FullButton = styled(Button)`
-//     width: 100%;
-//     border-radius: 4px;
-//     animation: ${animation} 1s infinite;
-// `;
+const FullButton = styled(Button)`
+    width: 100%;
+    border-radius: 4px;
+    animation: ${animation} 1s infinite;
+`;
 
 function App() {
     const AuthLandingPage = Auth(LandingPage, null);
