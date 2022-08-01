@@ -153,6 +153,11 @@ app.post('/api/users/addToCart', auth, (req, res) => {
     });
 });
 
+app.post('/api/users/successBuy', auth, (req, res) => {
+    // user 컬렉션 안에 history 필드안에  간단한 결제 정보 넣어주기
+    // payment 컬렉션 안에 자세한 결제 정보 넣어주기
+    // product 컬렉션 안에 sold 필드 정보 업데이트 시켜주기
+});
 app.get('/api/users/removeFromCart/:id', auth, (req, res) => {
     let productId = req.params.id;
 
