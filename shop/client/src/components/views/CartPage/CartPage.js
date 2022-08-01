@@ -87,7 +87,7 @@ const CartPage = ({ user }) => {
                 </div>
             )}
 
-            <Paypal />
+            {ShowTotal && <Paypal total={totalPrice} />}
         </CartPageContainer>
     );
 };
