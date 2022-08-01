@@ -9,6 +9,53 @@ import UploadProductPage from './components/views/UploadProductPage/UploadProduc
 import DetailProductPage from './components/views/DetailProductPage/DetailProductPage';
 import CartPage from './components/views/CartPage/CartPage';
 
+import styled, { keyframes } from 'styled-components';
+
+// const animation = keyframes`
+
+//     50% {
+//         transform: scale(1.3);
+//     }
+// `;
+// const Title = styled.div`
+//     color: ${(props) => props.theme.textColor};
+
+//     h1 {
+//         font-size: 30px;
+//         margin: 0 0 10px 0;
+//     }
+// `;
+
+// const Notice = styled.div`
+//     padding: 20px;
+//     border: 2px solid #aaa;
+//     background-color: ${(props) => props.theme.backgroundColor};
+
+//     ${Title}:hover {
+//         color: red;
+//     }
+// `;
+
+// const Button = styled.button`
+//     display: block;
+//     padding: 6px 10px;
+//     color: #fff;
+//     font-size: 18px;
+//     border-radius: 3px;
+//     background-color: crimson;
+//     border: 0;
+
+//     &:hover {
+//         background-color: teal;
+//     }
+// `;
+
+// const FullButton = styled(Button)`
+//     width: 100%;
+//     border-radius: 4px;
+//     animation: ${animation} 1s infinite;
+// `;
+
 function App() {
     const AuthLandingPage = Auth(LandingPage, null);
     const AuthLoginPage = Auth(LoginPage, false);
@@ -19,12 +66,28 @@ function App() {
     return (
         <Router>
             <NavBar />
+            {/* <div>
+                <Notice>
+                    <Title>
+                        <h1>아아 공지를 읽으세요 📢</h1>
+                        <h2>작성자: bkboy</h2>
+                    </Title>
+                    <FullButton>확인 : animation</FullButton>
+                    <Button>확인</Button>
+                </Notice>
+            </div> */}
             <Routes>
                 <Route path="/" element={<AuthLandingPage />} />
                 <Route path="/login" element={<AuthLoginPage />} />
                 <Route path="/register" element={<AuthRegisterPage />} />
-                <Route path="/product/upload" element={<AuthUploadProductPage />} />
-                <Route path="/product/:productId" element={<AuthDetailProductPage />} />
+                <Route
+                    path="/product/upload"
+                    element={<AuthUploadProductPage />}
+                />
+                <Route
+                    path="/product/:productId"
+                    element={<AuthDetailProductPage />}
+                />
                 <Route path="/user/cart" element={<AuthCartPage />} />
             </Routes>
         </Router>

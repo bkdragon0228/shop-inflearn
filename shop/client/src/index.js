@@ -10,8 +10,14 @@ import ReduxThunk from 'redux-thunk';
 
 // 생성한 리듀서를 import
 import Reducer from './_reducers';
-
 import 'antd/dist/antd.css';
+
+// styled-componet Theme
+import { ThemeProvider } from 'styled-components';
+const darkTheme = {
+    textColor: 'whitesmoke',
+    backgroundColor: '#111',
+};
 
 // store를 미들웨어 두개를 추가하여 생성.
 const store = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
@@ -19,8 +25,16 @@ const store = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        <Provider store={store(Reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())}>
-            <App />
+        <Provider
+            store={store(
+                Reducer,
+                window.__REDUX_DEVTOOLS_EXTENSION__ &&
+                    window.__REDUX_DEVTOOLS_EXTENSION__()
+            )}
+        >
+            <ThemeProvider theme={darkTheme}>
+                <App />
+            </ThemeProvider>
         </Provider>
     </React.StrictMode>
 );

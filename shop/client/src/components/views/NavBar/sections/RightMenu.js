@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 import { Menu, Badge } from 'antd';
 import { ClockCircleOutlined } from '@ant-design/icons';
 import axios from 'axios';
@@ -9,6 +9,18 @@ import { Link } from 'react-router-dom';
 function RightMenu(props) {
     const user = useSelector((state) => state.user);
     const navigate = useNavigate();
+
+    const countRef = useRef(0);
+
+    useEffect(() => {
+        if (user.userData && user.userData.cart) {
+            let cartInfo = user.userData.cart;
+            let newCount = cartInfo.reduce((acc, cur) => acc + cur.quantity, 0);
+
+            countRef.current = newCount;
+            console.log('렌더링');
+        }
+    });
 
     const logoutHandler = () => {
         axios.get(`api/users/logout`).then((response) => {
@@ -39,7 +51,7 @@ function RightMenu(props) {
                 </Menu.Item>
                 <Menu.Item key="cart">
                     <Link to="/user/cart">
-                        <Badge count={3}>
+                        <Badge count={countRef.current}>
                             <ClockCircleOutlined />
                         </Badge>
                     </Link>
