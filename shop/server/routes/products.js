@@ -21,7 +21,8 @@ router.get('/products_by_id/:id', (req, res) => {
     console.log(productIds);
 
     if (type === 'array') {
-        // 배열로 넘겼음에도  62df962718be744d0c147786,62df95e818be744d0c147772 이런 문자열로 넘오기때문에 다시 split
+        // 배열로 넘겼음에도  62df962718be744d0c147786,62df95e818be744d0c147772
+        // 이런 문자열로 넘오기때문에 다시 split으로 배열화.
         let ids = req.params.id.split(',');
         productIds = ids.map((item) => item);
     }
@@ -89,7 +90,7 @@ router.post('/products', (req, res) => {
 
     if (term) {
         Product.find(findArgs)
-            .find({ $text: { $search: term } })
+            .find({ $text: { $search: term } }) // 검색어가 존재하면 추가되는 작업~!
             .populate('writer')
             .skip(skip)
             .limit(limit)

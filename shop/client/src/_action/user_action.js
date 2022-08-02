@@ -70,6 +70,7 @@ export function getCartItems(cartIds, userCart) {
                 });
             });
 
+            // 상품 정보에 quantity 추가한것
             return res.data;
         });
 

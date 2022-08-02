@@ -40,7 +40,7 @@ const CartPage = ({ user }) => {
 
                 // store가 업데이트됐다. cartDetail정보가 추가되었음.
                 // 다시 설명하면 cartDetail은 db에 저장되어있던 product정보에
-                // user 컬렉션에 저장되어있는 quantity(담은 개수)  정보를 포함한 정보이다.
+                // user 컬렉션에 저장되어있는 quantity(담은 개수) 정보를 포함한 정보이다.
                 dispatch(getCartItems(cartItemIds, user.userData.cart)).then(
                     (res) => {
                         calculateTotal(res.payload);
@@ -50,6 +50,7 @@ const CartPage = ({ user }) => {
         }
     }, [user.userData]);
 
+    // 가격 합 구하기
     let calculateTotal = (cartDetail) => {
         let total = cartDetail.reduce(
             (acc, cur) => acc + +cur.price * +cur.quantity,

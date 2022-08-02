@@ -7,10 +7,10 @@ const ProductInfo = ({ detail }) => {
     const clickHandler = () => {
         // 필요한 정보를 cart 필드에 넣어준다.
         // cart필드는 user 컬렉션 안에 있음으로 리덕스(유저를 store에서 관리했으니)action 함수를 이용한다.
-
+        // user 컬렉션의 cart 필드를 건드는 작업임!
         dispatch(addToCart(detail._id)).then((res) => {
             if (res.payload.success) {
-                alert('장바구니에 추가되었습니다.');
+                alert('장바구니에 추가되었습니다.'); // user의 cart 필드에 저장을 성공했다는 뜻
             } else {
                 alert('장바구니에 추가하지 못했습니다.');
             }

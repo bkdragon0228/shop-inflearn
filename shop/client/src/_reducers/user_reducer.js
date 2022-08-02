@@ -22,18 +22,17 @@ export default function reducer(state = {}, action) {
         case ADD_TO_CART:
             return {
                 ...state,
-                userData: { ...state.userData, cart: action.payload },
+                userData: { ...state.userData, cart: action.payload }, // add_to_cart는 cart 정보만 업데이트되는 작업!
             };
-        // 형태가 조금 바뀐 이후는 서버에서 보내는 데이터를 cart정보만 보냈으니  원래 데이터에 추가하는 형태가 된것.
 
         case GET_CART_ITEMS:
-            return { ...state, cartDetail: action.payload };
+            return { ...state, cartDetail: action.payload }; // 상품정보에 quantity를 추가한 정보를 cartDetail 이라는곳에 저장
 
         case REMOVE_CART_ITEM:
             return {
                 ...state,
                 cartDetail: action.payload.productInfo,
-                userData: { ...state.userData, cart: action.payload.cart },
+                userData: { ...state.userData, cart: action.payload.cart }, // cartDetail과 userData를 동시에 수정하는 작업!
             };
 
         case ON_SUCCESS_BUY:

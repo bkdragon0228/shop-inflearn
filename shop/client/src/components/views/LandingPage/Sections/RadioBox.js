@@ -6,9 +6,9 @@ const RadioBox = ({ list, handleFilters }) => {
     const [Value, setValue] = useState(0); //price의 _id값을 넣어줌
     const renderRadioBox = () =>
         list &&
-        list.map((value) => (
-            <React.Fragment key={value._id}>
-                <Radio value={value._id}>{value.name}</Radio>
+        list.map((item) => (
+            <React.Fragment key={item._id}>
+                <Radio value={item._id}>{item.name}</Radio>
             </React.Fragment>
         ));
 
