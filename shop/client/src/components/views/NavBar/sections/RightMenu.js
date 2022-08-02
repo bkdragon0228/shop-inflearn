@@ -10,17 +10,20 @@ function RightMenu(props) {
     const user = useSelector((state) => state.user);
     const navigate = useNavigate();
 
-    const countRef = useRef(0);
+    const [count, setCount] = useState(0);
 
     useEffect(() => {
         if (user.userData && user.userData.cart) {
-            let cartInfo = user.userData.cart;
-            let newCount = cartInfo.reduce((acc, cur) => acc + cur.quantity, 0);
-
-            countRef.current = newCount;
-            console.log('렌더링');
+            if (user.userData.cart.length > 0) {
+                let cartInfo = user.userData.cart;
+                let newCount = cartInfo.reduce(
+                    (acc, cur) => acc + cur.quantity,
+                    0
+                );
+                setCount(newCount);
+            }
         }
-    });
+    }, [user.userData]);
 
     const logoutHandler = () => {
         axios.get(`api/users/logout`).then((response) => {
@@ -51,7 +54,7 @@ function RightMenu(props) {
                 </Menu.Item>
                 <Menu.Item key="cart">
                     <Link to="/user/cart">
-                        <Badge count={countRef.current}>
+                        <Badge count={count}>
                             <ClockCircleOutlined />
                         </Badge>
                     </Link>
